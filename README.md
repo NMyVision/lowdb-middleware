@@ -5,7 +5,7 @@ Forked version of [JSON Server](https://github.com/typicode/json-server). This p
 ## Roadmap
 
 - [x] Update packages to latest versions
-- [ ] Drop CLI support
+- [x] Drop CLI support
 - [ ] Rewrite code base to use ES6 style code ie: import fs from 'fs
 - [ ] Basic Auth plugin
 - [ ] Database management screens
