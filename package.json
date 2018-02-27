@@ -4,7 +4,6 @@
   "description":
     "Forked version of Json-Server, this repository focuses on ExpressJS middleware logic",
   "main": "./lib/server/index.js",
-  "bin": "./bin/index.js",
   "directories": {
     "test": "test"
   },
