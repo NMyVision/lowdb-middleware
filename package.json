@@ -1,0 +1,85 @@
+{
+  "name": "lowdb-middleware",
+  "version": "0.1.5",
+  "description": "Forked version of Json-Server, this repository focuses on ExpressJS middleware logic",
+  "main": "./lib/server/index.js",
+  "bin": "./bin/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "npm run test:server && eslint .",
+    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
+    "fix": "eslint . --fix",
+    "build": "babel src -d lib --copy-files",
+    "toc": "markdown-toc -i README.md",
+    "precommit": "npm test"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "connect-pause": "^0.1.0",
+    "cors": "^2.8.4",
+    "errorhandler": "^1.2.0",
+    "express": "^4.16.2",
+    "express-urlrewrite": "^1.2.0",
+    "lodash": "^4.11.2",
+    "lodash-id": "^0.14.0",
+    "lowdb": "^1.0.0",
+    "method-override": "^2.3.10",
+    "morgan": "^1.9.0",
+    "nanoid": "^1.0.1",
+    "pluralize": "^7.0.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "cross-env": "^5.1.1",
+    "eslint": "^4.10.0",
+    "eslint-config-prettier": "^2.7.0",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-prettier": "^2.3.1",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "husky": "^0.14.3",
+    "markdown-toc": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "mocha": "^5.0.1",
+    "prettier": "^1.11.0",
+    "server-ready": "^0.3.1",
+    "standard": "^11.0.0",
+    "supertest": "^3.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nmyvision/lowdb-middleware.git"
+  },
+  "keywords": [
+    "JSON",
+    "server",
+    "fake",
+    "REST",
+    "API",
+    "prototyping",
+    "mock",
+    "mocking",
+    "test",
+    "testing",
+    "rest",
+    "data",
+    "dummy",
+    "sandbox",
+    "json-server",
+    "lowdb",
+    "expressjs"
+  ],
+  "author": "M Gambill <git@nmyvision.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nmyvision/lowdb-middleware/issues"
+  },
+  "homepage": "https://github.com/nmyvision/lowdb-middleware#readme"
+}

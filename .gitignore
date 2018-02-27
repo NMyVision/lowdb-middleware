@@ -1,0 +1,12 @@
+# node packages
+node_modules
+
+# temp folders
+tmp
+lib
+
+# db file
+db.json
+
+# log files
+**/*.log
