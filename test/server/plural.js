@@ -233,6 +233,7 @@ describe('Server', () => {
 
     server = jsonServer.create()
     router = jsonServer.router(db)
+    // @ts-ignore
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter(rewriterRules))
     server.use(router)
@@ -720,7 +721,7 @@ describe('Server', () => {
         .get('/posts?_delay=1100')
         .expect(200, function(err) {
           const end = new Date()
-          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+          done(+end - +start > 1000 ? err : new Error("Request wasn't delayed"))
         })
     })
   })
@@ -778,7 +779,7 @@ describe('Server', () => {
         .send({ body: 'foo', booleanValue: true, integerValue: 1 })
         .expect(201, function(err) {
           const end = new Date()
-          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+          done(+end - +start > 1000 ? err : new Error("Request wasn't delayed"))
         })
     })
   })
@@ -819,7 +820,7 @@ describe('Server', () => {
         .send({ id: 1, booleanValue: true, integerValue: 1 })
         .expect(200, function(err) {
           const end = new Date()
-          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+          done(+end - +start > 1000 ? err : new Error("Request wasn't delayed"))
         })
     })
   })
@@ -857,7 +858,7 @@ describe('Server', () => {
         .send({ id: 1, booleanValue: true, integerValue: 1 })
         .expect(200, function(err) {
           const end = new Date()
-          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+          done(+end - +start > 1000 ? err : new Error("Request wasn't delayed"))
         })
     })
   })
@@ -888,7 +889,7 @@ describe('Server', () => {
         .send({ id: 1, booleanValue: true, integerValue: 1 })
         .expect(200, function(err) {
           const end = new Date()
-          done(end - start > 1000 ? err : new Error("Request wasn't delayed"))
+          done(+end - +start > 1000 ? err : new Error("Request wasn't delayed"))
         })
     })
   })

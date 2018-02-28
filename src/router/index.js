@@ -23,7 +23,7 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   // Create database
   let db
   if (_.isObject(source)) {
-    db = low(new MemoryAdapter())
+    db = low(new MemoryAdapter(null))
     db.setState(source)
   } else {
     db = low(new FileSync(source))
@@ -38,10 +38,10 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
   db._.mixin(mixins)
 
   // Expose database
-  router.db = db
+  router['db'] = db
 
   // Expose render
-  router.render = (req, res) => {
+  router['render'] = (req, res) => {
     res.jsonp(res.locals.data)
   }
 
@@ -80,7 +80,7 @@ module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
       res.locals.data = {}
     }
 
-    router.render(req, res)
+    router['render'](req, res)
   })
 
   router.use((err, req, res, next) => {

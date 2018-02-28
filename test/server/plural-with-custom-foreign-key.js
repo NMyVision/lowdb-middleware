@@ -6,17 +6,20 @@ const jsonServer = require('../../src')
 describe('Server with custom foreign key', () => {
   let server
   let router
-  let db
+  let db = {}
 
   beforeEach(() => {
     db = {}
 
+    // @ts-ignore
     db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
 
+    // @ts-ignore
     db.comments = [{ id: 1, post_id: 1 }, { id: 2, post_id: 1 }, { id: 3, post_id: 2 }]
 
     server = jsonServer.create()
     router = jsonServer.router(db, { foreignKeySuffix: '_id' })
+    // @ts-ignore
     server.use(jsonServer.defaults())
     server.use(router)
   })
