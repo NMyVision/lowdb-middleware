@@ -26,19 +26,13 @@ describe('mixins', () => {
 
   describe('getRemovable', () => {
     it('should return removable documents', () => {
-      const expected = [
-        { name: 'comments', id: 2 },
-        { name: 'comments', id: 3 }
-      ]
+      const expected = [{ name: 'comments', id: 2 }, { name: 'comments', id: 3 }]
 
       assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
     })
 
     it('should support custom foreignKeySuffix', () => {
-      const expected = [
-        { name: 'comments', id: 2 },
-        { name: 'comments', id: 3 }
-      ]
+      const expected = [{ name: 'comments', id: 2 }, { name: 'comments', id: 3 }]
 
       assert.deepEqual(_.getRemovable(db, { foreignKeySuffix: 'Id' }), expected)
     })

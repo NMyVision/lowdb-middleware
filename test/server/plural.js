@@ -20,16 +20,9 @@ describe('Server', () => {
 
     db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
 
-    db.tags = [
-      { id: 1, body: 'Technology' },
-      { id: 2, body: 'Photography' },
-      { id: 3, body: 'photo' }
-    ]
+    db.tags = [{ id: 1, body: 'Technology' }, { id: 2, body: 'Photography' }, { id: 3, body: 'photo' }]
 
-    db.users = [
-      { id: 1, username: 'Jim', tel: '0123' },
-      { id: 2, username: 'George', tel: '123' }
-    ]
+    db.users = [{ id: 1, username: 'Jim', tel: '0123' }, { id: 2, username: 'George', tel: '123' }]
 
     db.keyed = [{ id: 1, username: 'Jim' }, { id: 2, username: 'George' }]
 
@@ -54,19 +47,13 @@ describe('Server', () => {
       { id: 9, name: 'Isabelle', country: 'Argentina', total: 3 }
     ]
 
-    db.refs = [
-      { id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1 }
-    ]
+    db.refs = [{ id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1 }]
 
     db.stringIds = [{ id: '1234' }]
 
     db.deep = [{ a: { b: 1 } }, { a: 1 }]
 
-    db.nested = [
-      { resource: { name: 'dewey' } },
-      { resource: { name: 'cheatem' } },
-      { resource: { name: 'howe' } }
-    ]
+    db.nested = [{ resource: { name: 'dewey' } }, { resource: { name: 'cheatem' } }, { resource: { name: 'howe' } }]
 
     db.list = [
       { id: 1 },
@@ -92,6 +79,157 @@ describe('Server', () => {
       { name: 'third product', bought_by: ['secondCustomer'] },
       { name: 'fourth product' }
     ]
+
+    db.pages = [
+      {
+        id: 1,
+        title: 'Small Metal Shirt',
+        body: 'Towels',
+        userId: null,
+        productId: 5,
+        created: '2018-02-27T19:26:23.7580286-05:00',
+        product: {
+          id: 5,
+          name: 'Ergonomic Soft Fish',
+          body: 'Ball',
+          tags: ['Games & Shoes', 'Grocery & Shoes', 'Tools', 'Jewelery & Garden'],
+          userId: 1,
+          created: '2018-01-14T17:16:14.8209634-05:00',
+          price: '663.48',
+          thumbnail: 'http://placehold.it/150/lime'
+        },
+        user: null
+      },
+      {
+        id: 2,
+        title: 'Small Frozen Pizza',
+        body: 'Towels',
+        userId: 5,
+        productId: 3,
+        created: '2018-02-27T21:52:50.1430317-05:00',
+        product: {
+          id: 3,
+          name: 'Intelligent Metal Computer',
+          body: 'Salad',
+          tags: ['Sports & Movies'],
+          userId: 2,
+          created: '2017-06-29T21:39:01.6188883-04:00',
+          price: '126.80',
+          thumbnail: 'http://placehold.it/150/blue'
+        },
+        user: {
+          id: 5,
+          name: 'Rodolfo Kunze',
+          email: 'Rodolfo.Kunze94@hotmail.com',
+          avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
+        }
+      }
+    ]
+
+    db.pagesFlat = [
+      {
+        id: 1,
+        title: 'Small Metal Shirt',
+        body: 'Towels',
+        userId: null,
+        productId: 5,
+        created: '2018-02-27T19:26:23.7580286-05:00',
+        'product.id': 5,
+        'product.name': 'Ergonomic Soft Fish',
+        'product.body': 'Ball',
+        'product.tags:0': 'Games & Shoes',
+        'product.tags:1': 'Grocery & Shoes',
+        'product.tags:2': 'Tools',
+        'product.tags:3': 'Jewelery & Garden',
+        'product.userId': 1,
+        'product.created': '2018-01-14T17:16:14.8209634-05:00',
+        'product.price': '663.48',
+        'product.thumbnail': 'http://placehold.it/150/lime',
+        user: null
+      },
+      {
+        id: 2,
+        title: 'Small Frozen Pizza',
+        body: 'Towels',
+        userId: 5,
+        productId: 3,
+        created: '2018-02-27T21:52:50.1430317-05:00',
+        'product.id': 3,
+        'product.name': 'Intelligent Metal Computer',
+        'product.body': 'Salad',
+        'product.tags:0': 'Sports & Movies',
+        'product.userId': 2,
+        'product.created': '2017-06-29T21:39:01.6188883-04:00',
+        'product.price': '126.80',
+        'product.thumbnail': 'http://placehold.it/150/blue',
+        'user.id': 5,
+        'user.name': 'Rodolfo Kunze',
+        'user.email': 'Rodolfo.Kunze94@hotmail.com',
+        'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
+      }
+    ]
+
+    db.pageFlat = {
+      id: 2,
+      title: 'Small Frozen Pizza',
+      body: 'Towels',
+      userId: 5,
+      productId: 3,
+      created: '2018-02-27T21:52:50.1430317-05:00',
+      'product.id': 3,
+      'product.name': 'Intelligent Metal Computer',
+      'product.body': 'Salad',
+      'product.userId': 2,
+      'product.created': '2017-06-29T21:39:01.6188883-04:00',
+      'product.price': '126.80',
+      'product.tags:0': 'Sports & Movies',
+      'product.thumbnail': 'http://placehold.it/150/blue',
+      'user.id': 5,
+      'user.name': 'Rodolfo Kunze',
+      'user.email': 'Rodolfo.Kunze94@hotmail.com',
+      'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
+    }
+
+    db.pageFlatNoArrays = {
+      id: 2,
+      title: 'Small Frozen Pizza',
+      body: 'Towels',
+      userId: 5,
+      productId: 3,
+      created: '2018-02-27T21:52:50.1430317-05:00',
+      'product.id': 3,
+      'product.name': 'Intelligent Metal Computer',
+      'product.body': 'Salad',
+      'product.userId': 2,
+      'product.created': '2017-06-29T21:39:01.6188883-04:00',
+      'product.price': '126.80',
+      'product.thumbnail': 'http://placehold.it/150/blue',
+      'user.id': 5,
+      'user.name': 'Rodolfo Kunze',
+      'user.email': 'Rodolfo.Kunze94@hotmail.com',
+      'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
+    }
+
+    db.pageFlatNonFlatArrays = {
+      id: 2,
+      title: 'Small Frozen Pizza',
+      body: 'Towels',
+      userId: 5,
+      productId: 3,
+      created: '2018-02-27T21:52:50.1430317-05:00',
+      'product.id': 3,
+      'product.name': 'Intelligent Metal Computer',
+      'product.body': 'Salad',
+      'product.userId': 2,
+      'product.created': '2017-06-29T21:39:01.6188883-04:00',
+      'product.price': '126.80',
+      'product.tags': ['Sports & Movies'],
+      'product.thumbnail': 'http://placehold.it/150/blue',
+      'user.id': 5,
+      'user.name': 'Rodolfo Kunze',
+      'user.email': 'Rodolfo.Kunze94@hotmail.com',
+      'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
+    }
 
     server = jsonServer.create()
     router = jsonServer.router(db)
@@ -384,12 +522,42 @@ describe('Server', () => {
         .expect(200))
   })
 
-  describe('GET /:resource?keys=', () => {
+  describe('GET /:resource?_keys=', () => {
     it('should get only specific properties', () =>
       request(server)
         .get('/users?_keys=id,username')
         .expect('Content-Type', /json/)
         .expect(db.keyed)
+        .expect(200))
+  })
+
+  describe('GET /:resource?_flatten=', () => {
+    it('should return flattend objects', () =>
+      request(server)
+        .get('/pages?_flatten=1')
+        .expect('Content-Type', /json/)
+        .expect(db.pagesFlat)
+        .expect(200))
+  })
+
+  describe('GET /:resource/:id?_flatten=', () => {
+    it('should return flattend arrays', () =>
+      request(server)
+        .get('/pages/2?_flatten=1')
+        .expect('Content-Type', /json/)
+        .expect(db.pageFlat)
+        .expect(200))
+    it('should exclude arrays', () =>
+      request(server)
+        .get('/pages/2?_flatten=0')
+        .expect('Content-Type', /json/)
+        .expect(db.pageFlatNoArrays)
+        .expect(200))
+    it('should not flatten arrays', () =>
+      request(server)
+        .get('/pages/2?_flatten=2')
+        .expect('Content-Type', /json/)
+        .expect(db.pageFlatNonFlatArrays)
         .expect(200))
   })
 

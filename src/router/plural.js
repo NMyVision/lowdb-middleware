@@ -45,35 +45,60 @@ module.exports = (db, name, opts) => {
       })
   }
 
-  // gist.github.com/slidenerd/04b78a5732f063a6ce6d73ef66a3fb3a
-  function flattenObject(ob) {
+  function getFlattenSettings(_flatten) {
+    return +_flatten === 0
+      ? { allowArrays: false }
+      : +_flatten === 2
+        ? { allowArrays: true, flattenArrays: false }
+        : { allowArrays: true, flattenArrays: true } /* default */
+  }
+
+  function flattenObject(ob, conf) {
     let toReturn = {}
-    let flatObject
-    for (let i in ob) {
-      if (!ob.hasOwnProperty(i)) {
-        continue
-      }
-      // Exclude arrays from the final result
-      // Check this http://stackoverflow.com/questions/4775722/check-if-object-is-array
-      if (ob[i] && Array === ob[i].constructor) {
-        continue
-      }
-      if (typeof ob[i] === 'object') {
-        flatObject = flattenObject(ob[i])
-        for (let x in flatObject) {
-          if (!flatObject.hasOwnProperty(x)) {
-            continue
-          }
-          // Exclude arrays from the final result
-          if (flatObject[x] && Array === flatObject.constructor) {
-            continue
-          }
-          toReturn[i + (isNaN(x) ? '.' + x : '')] = flatObject[x]
-        }
+    let o = Object.assign({ allowArrays: true, flattenArrays: true }, conf)
+    if (!ob) return null
+    function setValue(parent, key, item) {
+      if (parent !== undefined) {
+        toReturn[`${parent}.${key}`] = item
       } else {
-        toReturn[i] = ob[i]
+        toReturn[key] = item
       }
     }
+    function flat(ob, parent) {
+      Object.keys(ob).forEach(key => {
+        let item = ob[key]
+
+        if (item == null) {
+          setValue(parent, key, item)
+          return
+        }
+
+        // Exclude arrays from the final result
+        if (Array.isArray(item) && o.allowArrays === false) return
+
+        if (Array.isArray(item)) {
+          if (o.flattenArrays === true) {
+            item.forEach((el, i) => {
+              let k = `${parent ? parent + '.' : ''}${key}:${i}`
+              if (typeof el === 'object' || Array.isArray(el)) flat(el, k)
+              else setValue(undefined, k, el)
+            })
+          } else {
+            setValue(parent, key, item)
+          }
+        } else if (typeof item === 'object') {
+          flat(item, key)
+        } else {
+          setValue(parent, key, item)
+        }
+      })
+    }
+
+    if (Array.isArray(ob)) {
+      return ob.map(x => flattenObject(x, conf))
+    }
+    flat(ob)
+
     return toReturn
   }
 
@@ -179,9 +204,7 @@ module.exports = (db, name, opts) => {
               if (isRange) {
                 const isLowerThan = /_gte$/.test(key)
 
-                return isLowerThan
-                  ? value <= elementValue
-                  : value >= elementValue
+                return isLowerThan ? value <= elementValue : value >= elementValue
               } else if (isDifferent) {
                 return value !== elementValue.toString()
               } else if (isLike) {
@@ -209,10 +232,7 @@ module.exports = (db, name, opts) => {
     // Slice result
     if (_end || _limit || _page) {
       res.setHeader('X-Total-Count', chain.size())
-      res.setHeader(
-        'Access-Control-Expose-Headers',
-        `X-Total-Count${_page ? ', Link' : ''}`
-      )
+      res.setHeader('Access-Control-Expose-Headers', `X-Total-Count${_page ? ', Link' : ''}`)
     }
 
     if (_page) {
@@ -224,31 +244,19 @@ module.exports = (db, name, opts) => {
       const fullURL = getFullURL(req)
 
       if (page.first) {
-        links.first = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.first}`
-        )
+        links.first = fullURL.replace(`page=${page.current}`, `page=${page.first}`)
       }
 
       if (page.prev) {
-        links.prev = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.prev}`
-        )
+        links.prev = fullURL.replace(`page=${page.current}`, `page=${page.prev}`)
       }
 
       if (page.next) {
-        links.next = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.next}`
-        )
+        links.next = fullURL.replace(`page=${page.current}`, `page=${page.next}`)
       }
 
       if (page.last) {
-        links.last = fullURL.replace(
-          `page=${page.current}`,
-          `page=${page.last}`
-        )
+        links.last = fullURL.replace(`page=${page.current}`, `page=${page.last}`)
       }
 
       res.links(links)
@@ -270,8 +278,10 @@ module.exports = (db, name, opts) => {
     })
 
     // flatten nested objects
-    if (_flatten) {
-      chain = chain.flatMap(flattenObject)
+    if (_flatten !== undefined) {
+      let fs = getFlattenSettings(_flatten)
+      res.flatSettings = `allowArrays: ${fs.allowArrays} , flattenArrays: ${fs.flattenArrays}`
+      chain = chain.flatMap(x => flattenObject(x, fs))
     }
 
     // return only properties listed
@@ -290,6 +300,7 @@ module.exports = (db, name, opts) => {
   function show(req, res, next) {
     const _embed = req.query._embed
     const _expand = req.query._expand
+    const _flatten = req.query._flatten
     const resource = db
       .get(name)
       .getById(req.params.id)
@@ -297,7 +308,7 @@ module.exports = (db, name, opts) => {
 
     if (resource) {
       // Clone resource to avoid making changes to the underlying object
-      const clone = _.cloneDeep(resource)
+      let clone = _.cloneDeep(resource)
 
       // Embed other resources based on resource id
       // /posts/1?_embed=comments
@@ -306,6 +317,12 @@ module.exports = (db, name, opts) => {
       // Expand inner resources based on id
       // /posts/1?_expand=user
       expand(clone, _expand)
+
+      if (_flatten) {
+        let fs = getFlattenSettings(_flatten)
+        res.flatSettings = `allowArrays: ${fs.allowArrays} , flattenArrays: ${fs.flattenArrays}`
+        clone = flattenObject(clone, fs)
+      }
 
       res.locals.data = clone
     }
@@ -335,10 +352,7 @@ module.exports = (db, name, opts) => {
     const id = req.params.id
     let chain = db.get(name)
 
-    chain =
-      req.method === 'PATCH'
-        ? chain.updateById(id, req.body)
-        : chain.replaceById(id, req.body)
+    chain = req.method === 'PATCH' ? chain.updateById(id, req.body) : chain.replaceById(id, req.body)
 
     const resource = chain.value()
 

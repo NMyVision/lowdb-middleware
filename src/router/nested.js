@@ -22,7 +22,8 @@ module.exports = opts => {
     next()
   }
 
+  // prettier-ignore
   return router
-    .get('/:resource/:id/:nested', get)
-    .post('/:resource/:id/:nested', post)
+    .get("/:resource/:id/:nested", get)
+    .post("/:resource/:id/:nested", post)
 }

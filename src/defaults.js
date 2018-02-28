@@ -38,8 +38,7 @@ module.exports = function(opts) {
   if (opts.logger) {
     arr.push(
       logger('dev', {
-        skip: req =>
-          process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
+        skip: req => process.env.NODE_ENV === 'test' || req.path === '/favicon.ico'
       })
     )
   }

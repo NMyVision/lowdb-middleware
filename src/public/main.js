@@ -16,19 +16,13 @@ m.mount(document.getElementById('resources'), {
         .map(function(key) {
           return m('li', [
             m('a', { href: key }, '/' + key),
-            m(
-              'sup',
-              Array.isArray(db[key]) ? ' ' + db[key].length + 'x' : ' object'
-            )
+            m('sup', Array.isArray(db[key]) ? ' ' + db[key].length + 'x' : ' object')
           ])
         })
         .concat([m('a', { href: 'db' }, '/db'), m('sup', m('em', ' state'))])
     )
 
-    return [
-      m('h4', 'Resources'),
-      keys.length ? resourceList : m('p', 'No resources found')
-    ]
+    return [m('h4', 'Resources'), keys.length ? resourceList : m('p', 'No resources found')]
   }
 })
 

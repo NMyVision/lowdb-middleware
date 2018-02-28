@@ -1,18 +1,18 @@
 {
   "name": "lowdb-middleware",
-  "version": "0.1.5",
-  "description":
-    "Forked version of Json-Server, this repository focuses on ExpressJS middleware logic",
-  "main": "./lib/server/index.js",
+  "version": "0.1.7",
+  "description": "Forked version of Json-Server, this repository focuses on ExpressJS middleware logic",
+  "main": "./lib/index.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "npm run test:server && eslint .",
-    "test:server": "cross-env NODE_ENV=test mocha test/server/*.js",
+    "test:server": "cross-env NODE_ENV=test mocha test/server/plural.js",
     "fix": "eslint . --fix",
     "build": "babel src -d lib --copy-files",
-    "toc": "markdown-toc -i README.md"
+    "toc": "markdown-toc -i README.md",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
