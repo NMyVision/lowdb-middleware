@@ -1,7 +1,7 @@
-const assert = require('assert')
-const _ = require('lodash')
-const request = require('supertest')
-const jsonServer = require('../../src')
+import assert from 'assert'
+import _ from 'lodash'
+import request from 'supertest'
+import jsonServer from '../../src'
 
 describe('Server with custom foreign key', () => {
   let server

@@ -1,5 +1,5 @@
-const request = require('supertest')
-const jsonServer = require('../../src')
+import request from 'supertest'
+import jsonServer from '../../src'
 
 describe('Server', () => {
   let server
@@ -9,6 +9,7 @@ describe('Server', () => {
   beforeEach(() => {
     db = {}
 
+    // @ts-ignore
     db.user = {
       name: 'foo',
       email: 'foo@example.com'
@@ -16,6 +17,8 @@ describe('Server', () => {
 
     server = jsonServer.create()
     router = jsonServer.router(db)
+
+    // @ts-ignore
     server.use(jsonServer.defaults())
     server.use(router)
   })

@@ -1,15 +1,9 @@
-const nanoid = require('nanoid')
-const pluralize = require('pluralize')
-
-module.exports = {
-  getRemovable,
-  createId,
-  deepQuery
-}
+import nanoid from 'nanoid'
+import pluralize from 'pluralize'
 
 // Returns document ids that have unsatisfied relations
 // Example: a comment that references a post that doesn't exist
-function getRemovable(db, opts) {
+export function getRemovable(db, opts) {
   const _ = this
   const removable = []
   _.each(db, (coll, collName) => {
@@ -37,7 +31,7 @@ function getRemovable(db, opts) {
 
 // Return incremented id or uuid
 // Used to override lodash-id's createId with utils.createId
-function createId(coll) {
+export function createId(coll) {
   const _ = this
   const idProperty = _.__id()
   if (_.isEmpty(coll)) {
@@ -50,7 +44,7 @@ function createId(coll) {
   }
 }
 
-function deepQuery(value, q) {
+export function deepQuery(value, q) {
   const _ = this
   if (value && q) {
     if (_.isArray(value)) {

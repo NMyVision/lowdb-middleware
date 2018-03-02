@@ -1,7 +1,7 @@
-const assert = require('assert')
-const _ = require('lodash')
-const request = require('supertest')
-const jsonServer = require('../../src')
+import assert from 'assert'
+import _ from 'lodash'
+import request from 'supertest'
+import jsonServer from '../../src'
 
 describe('Server', () => {
   let server
@@ -17,15 +17,15 @@ describe('Server', () => {
 
   beforeEach(() => {
     db = {}
-
+    // @ts-ignore
     db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
-
+    // @ts-ignore
     db.tags = [{ id: 1, body: 'Technology' }, { id: 2, body: 'Photography' }, { id: 3, body: 'photo' }]
-
+    // @ts-ignore
     db.users = [{ id: 1, username: 'Jim', tel: '0123' }, { id: 2, username: 'George', tel: '123' }]
-
+    // @ts-ignore
     db.keyed = [{ id: 1, username: 'Jim' }, { id: 2, username: 'George' }]
-
+    // @ts-ignore
     db.comments = [
       { id: 1, body: 'foo', published: true, postId: 1, userId: 1 },
       { id: 2, body: 'bar', published: false, postId: 1, userId: 2 },
@@ -34,7 +34,7 @@ describe('Server', () => {
       { id: 5, body: 'quux', published: false, postId: 2, userId: 1 },
       { id: 6, body: 'qaax', published: true, postId: null, userId: null }
     ]
-
+    // @ts-ignore
     db.buyers = [
       { id: 1, name: 'Aileen', country: 'Colombia', total: 100 },
       { id: 2, name: 'Barney', country: 'Colombia', total: 200 },
@@ -46,15 +46,15 @@ describe('Server', () => {
       { id: 8, name: 'Henry', country: 'Argentina', total: 2 },
       { id: 9, name: 'Isabelle', country: 'Argentina', total: 3 }
     ]
-
+    // @ts-ignore
     db.refs = [{ id: 'abcd-1234', url: 'http://example.com', postId: 1, userId: 1 }]
-
+    // @ts-ignore
     db.stringIds = [{ id: '1234' }]
-
+    // @ts-ignore
     db.deep = [{ a: { b: 1 } }, { a: 1 }]
-
+    // @ts-ignore
     db.nested = [{ resource: { name: 'dewey' } }, { resource: { name: 'cheatem' } }, { resource: { name: 'howe' } }]
-
+    // @ts-ignore
     db.list = [
       { id: 1 },
       { id: 2 },
@@ -72,14 +72,14 @@ describe('Server', () => {
       { id: 14 },
       { id: 15 }
     ]
-
+    // @ts-ignore
     db.products = [
       { name: 'first product', bought_by: ['firstCustomer', 'secondCustomer'] },
       { name: 'second product', bought_by: ['firstCustomer'] },
       { name: 'third product', bought_by: ['secondCustomer'] },
       { name: 'fourth product' }
     ]
-
+    // @ts-ignore
     db.pages = [
       {
         id: 1,
@@ -125,7 +125,7 @@ describe('Server', () => {
         }
       }
     ]
-
+    // @ts-ignore
     db.pagesFlat = [
       {
         id: 1,
@@ -168,7 +168,7 @@ describe('Server', () => {
         'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
       }
     ]
-
+    // @ts-ignore
     db.pageFlat = {
       id: 2,
       title: 'Small Frozen Pizza',
@@ -189,7 +189,7 @@ describe('Server', () => {
       'user.email': 'Rodolfo.Kunze94@hotmail.com',
       'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
     }
-
+    // @ts-ignore
     db.pageFlatNoArrays = {
       id: 2,
       title: 'Small Frozen Pizza',
@@ -209,7 +209,7 @@ describe('Server', () => {
       'user.email': 'Rodolfo.Kunze94@hotmail.com',
       'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
     }
-
+    // @ts-ignore
     db.pageFlatNonFlatArrays = {
       id: 2,
       title: 'Small Frozen Pizza',

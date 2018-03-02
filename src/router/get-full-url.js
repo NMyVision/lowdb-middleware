@@ -1,6 +1,6 @@
-const url = require('url')
+import url from 'url'
 
-module.exports = function getFullURL(req) {
+export default req => {
   const root = url.format({
     protocol: req.protocol,
     host: req.get('host')

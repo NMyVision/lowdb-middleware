@@ -1,8 +1,8 @@
-const express = require('express')
-const pluralize = require('pluralize')
-const delay = require('./delay')
+import express from 'express'
+import pluralize from 'pluralize'
+import delay from './delay'
 
-module.exports = opts => {
+export default opts => {
   const router = express.Router()
   router.use(delay)
 

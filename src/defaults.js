@@ -1,13 +1,13 @@
-const fs = require('fs')
-const path = require('path')
-const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
-const compression = require('compression')
-const errorhandler = require('errorhandler')
-const bodyParser = require('./body-parser')
+import fs from 'fs'
+import path from 'path'
+import express from 'express'
+import logger from 'morgan'
+import cors from 'cors'
+import compression from 'compression'
+import errorhandler from 'errorhandler'
+import bodyParser from './body-parser'
 
-module.exports = function(opts) {
+export default opts => {
   const userDir = path.join(process.cwd(), 'public')
   const defaultDir = path.join(__dirname, 'public')
   const staticDir = fs.existsSync(userDir) ? userDir : defaultDir

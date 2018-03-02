@@ -1,7 +1,7 @@
-const bodyParser = require('body-parser')
+import bodyParser from 'body-parser'
 
 // prettier-ignore
-module.exports = [
+export default [
   bodyParser.json({ limit: '10mb' }), 
   bodyParser.urlencoded({ extended: false })
 ]

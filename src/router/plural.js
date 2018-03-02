@@ -1,12 +1,12 @@
-const express = require('express')
-const _ = require('lodash')
-const pluralize = require('pluralize')
-const write = require('./write')
-const getFullURL = require('./get-full-url')
-const utils = require('../utils')
-const delay = require('./delay')
+import express from 'express'
+import _ from 'lodash'
+import pluralize from 'pluralize'
+import write from './write'
+import getFullURL from './get-full-url'
+import utils from '../utils'
+import delay from './delay'
 
-module.exports = (db, name, opts) => {
+export default (db, name, opts) => {
   // Create router
   const router = express.Router()
   router.use(delay)

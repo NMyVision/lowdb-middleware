@@ -1,18 +1,18 @@
-const express = require('express')
-const methodOverride = require('method-override')
-const _ = require('lodash')
-const lodashId = require('lodash-id')
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const MemoryAdapter = require('lowdb/adapters/Memory')
-const bodyParser = require('../body-parser')
-const validateData = require('./validate-data')
-const plural = require('./plural')
-const nested = require('./nested')
-const singular = require('./singular')
-const mixins = require('../mixins')
+import express from 'express'
+import methodOverride from 'method-override'
+import _ from 'lodash'
+import lodashId from 'lodash-id'
+import low from 'lowdb'
+import FileSync from 'lowdb/adapters/FileSync'
+import MemoryAdapter from 'lowdb/adapters/Memory'
+import bodyParser from '../body-parser'
+import validateData from './validate-data'
+import plural from './plural'
+import nested from './nested'
+import singular from './singular'
+import * as mixins from '../mixins'
 
-module.exports = (source, opts = { foreignKeySuffix: 'Id' }) => {
+export default (source, opts = { foreignKeySuffix: 'Id' }) => {
   // Create router
   const router = express.Router()
 

@@ -1,4 +1,4 @@
-const _ = require('lodash')
+import _ from 'lodash'
 
 function validateKey(key) {
   if (key.indexOf('/') !== -1) {
@@ -12,7 +12,7 @@ function validateKey(key) {
   }
 }
 
-module.exports = obj => {
+export default obj => {
   if (_.isPlainObject(obj)) {
     Object.keys(obj).forEach(validateKey)
   } else {
