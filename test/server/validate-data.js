@@ -1,5 +1,5 @@
 import assert from 'assert'
-import validateData from '../../src/router/validate-data'
+import validateData from '../../src/core/validate-data'
 
 describe('validateData', () => {
   it('should throw an error if data contains /', () => {

@@ -18,7 +18,7 @@ describe('Server with custom foreign key', () => {
     db.comments = [{ id: 1, post_id: 1 }, { id: 2, post_id: 1 }, { id: 3, post_id: 2 }]
 
     server = jsonServer.create()
-    router = jsonServer.router(db, { foreignKeySuffix: '_id' })
+    router = jsonServer.staticRouter(db, { foreignKeySuffix: '_id' })
     // @ts-ignore
     server.use(jsonServer.defaults())
     server.use(router)

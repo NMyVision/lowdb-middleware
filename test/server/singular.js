@@ -1,7 +1,7 @@
 import request from 'supertest'
 import jsonServer from '../../src'
 
-describe('Server', () => {
+describe('Server (Single)', () => {
   let server
   let router
   let db
@@ -16,7 +16,7 @@ describe('Server', () => {
     }
 
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = jsonServer.staticRouter(db)
 
     // @ts-ignore
     server.use(jsonServer.defaults())

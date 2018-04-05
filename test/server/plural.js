@@ -3,7 +3,7 @@ import _ from 'lodash'
 import request from 'supertest'
 import jsonServer from '../../src'
 
-describe('Server', () => {
+describe('Server (Plural)', () => {
   let server
   let router
   let db
@@ -15,7 +15,7 @@ describe('Server', () => {
     '/articles\\?_id=:id': '/posts/:id'
   }
 
-  beforeEach(() => {
+  let init = () => {
     db = {}
     // @ts-ignore
     db.posts = [{ id: 1, body: 'foo' }, { id: 2, body: 'bar' }]
@@ -231,8 +231,14 @@ describe('Server', () => {
       'user.avatar': 'https://s3.amazonaws.com/uifaces/faces/twitter/syropian/128.jpg'
     }
 
+    return db
+  }
+
+  beforeEach(() => {
+    db = init()
+
     server = jsonServer.create()
-    router = jsonServer.router(db)
+    router = jsonServer.staticRouter(db)
     // @ts-ignore
     server.use(jsonServer.defaults())
     server.use(jsonServer.rewriter(rewriterRules))

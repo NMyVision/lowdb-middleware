@@ -1,18 +1,39 @@
 import express from 'express'
 import methodOverride from 'method-override'
 import _ from 'lodash'
-import lodashId from 'lodash-id'
-import low from 'lowdb'
-import FileSync from 'lowdb/adapters/FileSync'
-import MemoryAdapter from 'lowdb/adapters/Memory'
 import bodyParser from '../body-parser'
-import validateData from './validate-data'
+import lowdb from '../core/lowdb'
 import plural from './plural'
 import nested from './nested'
 import singular from './singular'
-import * as mixins from '../mixins'
+import database from './database'
 
-export default (source, opts = { foreignKeySuffix: 'Id' }) => {
+const defaultOptions = {
+  foreignKeySuffix: 'Id',
+  onSchema(req, res, next) {
+    next()
+  },
+  onInit(req, res, next) {
+    next()
+  },
+  onRead(req, res, next) {
+    next()
+  },
+  onWrite(req, res, next) {
+    next()
+  },
+  onDelete(req, res, next) {
+    next()
+  },
+  onRender(req, res) {
+    res.jsonp(res.locals.data)
+  }
+}
+
+export default (source, options) => {
+  // Merge with default values
+  let opts = Object.assign(defaultOptions, options)
+
   // Create router
   const router = express.Router()
 
@@ -20,35 +41,13 @@ export default (source, opts = { foreignKeySuffix: 'Id' }) => {
   router.use(methodOverride())
   router.use(bodyParser)
 
-  // Create database
-  let db
-  if (_.isObject(source)) {
-    db = low(new MemoryAdapter(null))
-    db.setState(source)
-  } else {
-    db = low(new FileSync(source))
-  }
-
-  validateData(db.getState())
-
-  // Add lodash-id methods to db
-  db._.mixin(lodashId)
-
-  // Add specific mixins
-  db._.mixin(mixins)
+  let db = lowdb(source)
 
   // Expose database
   router['db'] = db
 
-  // Expose render
-  router['render'] = (req, res) => {
-    res.jsonp(res.locals.data)
-  }
-
-  // GET /db
-  router.get('/db', (req, res) => {
-    res.jsonp(db.getState())
-  })
+  // Handle /db
+  router.use(database(db, opts))
 
   // Handle /:parent/:parentId/:resource
   router.use(nested(opts))
@@ -57,7 +56,7 @@ export default (source, opts = { foreignKeySuffix: 'Id' }) => {
   db
     .forEach((value, key) => {
       if (_.isPlainObject(value)) {
-        router.use(`/${key}`, singular(db, key))
+        router.use(`/${key}`, singular(db, key, opts))
         return
       }
 
@@ -80,7 +79,7 @@ export default (source, opts = { foreignKeySuffix: 'Id' }) => {
       res.locals.data = {}
     }
 
-    router['render'](req, res)
+    opts.onRender(req, res)
   })
 
   router.use((err, req, res, next) => {

@@ -2,12 +2,9 @@ import express from 'express'
 import defaults from './defaults'
 import rewriter from './rewriter'
 import bodyParser from './body-parser'
-import router from './router'
+import staticRouter from './static-router'
+import * as core from './core'
 
-export default {
-  create: () => express().set('json spaces', 2),
-  defaults,
-  rewriter,
-  bodyParser,
-  router
-}
+const create = () => express().set('json spaces', 2)
+
+export default { create, defaults, rewriter, bodyParser, staticRouter, core }

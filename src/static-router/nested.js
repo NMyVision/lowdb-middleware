@@ -1,6 +1,6 @@
 import express from 'express'
 import pluralize from 'pluralize'
-import delay from './delay'
+import delay from '../core/delay'
 
 export default opts => {
   const router = express.Router()
