@@ -21,9 +21,9 @@ export function update(req, res, next) {
 
 export function updateItem(req, res, next) {
   let { db } = res.locals
-  let name = req.params.name
-  let source = db.getState()[name]
-  source = req.body
+  let name = req.params.id
+  let source = db.getState()
+  source[name] = req.body
   db.setState(source)
   db.write()
   return next()
@@ -31,7 +31,7 @@ export function updateItem(req, res, next) {
 
 export function remove(req, res, next) {
   let { db } = res.locals
-  let name = req.params.name
+  let name = req.params.id
   let source = db.getState()
   delete source[name]
   return next()
