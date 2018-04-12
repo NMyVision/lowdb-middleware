@@ -10,7 +10,7 @@ Forked version of [JSON Server](https://github.com/typicode/json-server). This p
 - [x] Add API hooks
 - [ ] Basic Auth plugin
 - [x] Database management endpoints
-- [ ] Add dynamic databases routes
+- [x] Add dynamic databases routes
 - [ ] Use FileAsync via async/await 
 - [ ] Configurable setup
 - [ ] Snapshots / Restore

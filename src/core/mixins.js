@@ -29,6 +29,8 @@ export function getRemovable(db, opts) {
   return removable
 }
 
+const ID_LENGTH = 10
+
 // Return incremented id or uuid
 // Used to override lodash-id's createId with utils.createId
 export function createId(coll) {
@@ -37,10 +39,13 @@ export function createId(coll) {
   if (_.isEmpty(coll)) {
     return 1
   } else {
-    let id = _(coll).maxBy(idProperty)[idProperty]
+    let temp = _(coll).maxBy(idProperty)
+
+    if (temp === undefined) return nanoid(ID_LENGTH)
+    let id = temp[idProperty]
 
     // Increment integer id or generate string id
-    return _.isFinite(id) ? ++id : nanoid(7)
+    return _.isFinite(id) ? ++id : nanoid(ID_LENGTH)
   }
 }
 

@@ -1,17 +1,15 @@
 import express from 'express'
 import { write, delay, plural } from '../core'
 
-const { single, list, create, update, destroy } = plural
+const { single, list, create, update, remove } = plural
 
 export default (db, name, opts) => {
   // Create router
   const router = express.Router()
   router.use(delay)
 
-  const w = write(db)
-
   function prep(req, res, next) {
-    res.locals = { db, name, opts, id: req.params.id }
+    Object.assign(res.locals, { db, name, opts, id: req.params.id })
     return next()
   }
 
@@ -20,14 +18,14 @@ export default (db, name, opts) => {
   router
     .route('/')
     .get(opts.onRead, list)
-    .post(opts.onWrite, create, w)
+    .post(opts.onWrite, create, write)
 
   router
     .route('/:id')
     .get(opts.onRead, single)
-    .put(opts.onWrite, update, w)
-    .patch(opts.onWrite, update, w)
-    .delete(opts.onDelete, opts.onWrite, destroy, w)
+    .put(opts.onWrite, update, write)
+    .patch(opts.onWrite, update, write)
+    .delete(opts.onDelete, opts.onWrite, remove, write)
 
   return router
 }

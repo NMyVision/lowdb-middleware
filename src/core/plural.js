@@ -269,7 +269,7 @@ export function update(req, res, next) {
 }
 
 // DELETE /name/:id
-export function destroy(req, res, next) {
+export function remove(req, res, next) {
   let { db, name, opts } = res.locals
   const resource = db
     .get(name)

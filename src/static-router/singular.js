@@ -7,10 +7,8 @@ export default (db, name, opts) => {
   const router = express.Router()
   router.use(delay)
 
-  const w = write(db)
-
   function prep(req, res, next) {
-    res.locals = { db, name }
+    Object.assign(res.locals, { db, name })
     return next()
   }
 
@@ -18,9 +16,9 @@ export default (db, name, opts) => {
     .route('/')
     .all(prep, opts.onInit)
     .get(opts.onRead, get)
-    .post(opts.onWrite, create, w)
-    .put(opts.onWrite, update, w)
-    .patch(opts.onWrite, update, w)
+    .post(opts.onWrite, create, write)
+    .put(opts.onWrite, update, write)
+    .patch(opts.onWrite, update, write)
 
   return router
 }

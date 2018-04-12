@@ -1,7 +1,5 @@
-export default source => {
-  return (req, res, next) => {
-    let db = source || res.locals.db
-    db.write()
-    next()
-  }
+export default (req, res, next) => {
+  let db = res.locals.db
+  db.write()
+  next()
 }

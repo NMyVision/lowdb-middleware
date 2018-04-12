@@ -1,35 +1,15 @@
 import express from 'express'
-import { merge } from 'lodash'
-import { write } from '../core'
+import { write, database, defaultOptions } from '../core'
 
-export default (db, opts) => {
+const { getAll, getKeys, update, updateItem, remove } = database
+
+export default (db, options) => {
+  let opts = Object.assign({}, defaultOptions, options)
+
   const router = express.Router()
-  const w = write(db)
 
   function prep(req, res, next) {
-    res.locals = { db, isRoot: true, id: req.params.id }
-    return next()
-  }
-
-  function getAll(req, res) {
-    res.jsonp(db.getState())
-  }
-
-  function getKeys(req, res) {
-    res.setHeader('X-Keys', Object.keys(db.getState()).join())
-    res.end()
-  }
-
-  function update(req, res, next) {
-    let source = db.getState()
-    res.locals.db = merge(source, req.body)
-    return next()
-  }
-
-  function remove(req, res, next) {
-    let name = req.params.name
-    let source = db.getState()
-    delete source[name]
+    Object.assign(res.locals, { db, isRoot: true, id: req.params.id })
     return next()
   }
 
@@ -38,12 +18,13 @@ export default (db, opts) => {
     .all(prep, opts.onSchema, opts.onInit)
     .head(opts.onRead, getKeys)
     .get(opts.onRead, getAll)
-    .post(opts.onWrite, update, w, getAll)
+    .patch(opts.onWrite, update, write, getAll)
 
   router
     .route('/db/:id')
     .all(prep, opts.onSchema, opts.onInit)
-    .delete(opts.onDelete, remove, w, getAll)
+    .delete(opts.onDelete, remove, write, getAll)
+    .patch(opts.onWrite, updateItem, write, getAll)
 
   return router
 }

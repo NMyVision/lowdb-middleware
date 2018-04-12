@@ -88,8 +88,6 @@ export default function auth(source, opts) {
     next()
   }
 
-  const w = write(db)
-
   function prep(req, res, next) {
     res.locals = { db, name, opts }
     return next()
@@ -101,9 +99,9 @@ export default function auth(source, opts) {
     .get('/me', requireAuth, GetUser)
 
     .get('/signin', handleLogin)
-    .get('/register', Register, plural.create, w)
-    .post('/:id', requireAuth, UpdateUser, plural.update, w)
-    .patch('/:id', requireAuth, UpdateUser, plural.update, w)
-    .delete('/:id', requireAuth, plural.destroy, w)
+    .get('/register', Register, plural.create, write)
+    .post('/:id', requireAuth, UpdateUser, plural.update, write)
+    .patch('/:id', requireAuth, UpdateUser, plural.update, write)
+    .delete('/:id', requireAuth, plural.remove, write)
   return router
 }

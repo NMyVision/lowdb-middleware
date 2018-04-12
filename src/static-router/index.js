@@ -7,32 +7,11 @@ import plural from './plural'
 import nested from './nested'
 import singular from './singular'
 import database from './database'
-
-const defaultOptions = {
-  foreignKeySuffix: 'Id',
-  onSchema(req, res, next) {
-    next()
-  },
-  onInit(req, res, next) {
-    next()
-  },
-  onRead(req, res, next) {
-    next()
-  },
-  onWrite(req, res, next) {
-    next()
-  },
-  onDelete(req, res, next) {
-    next()
-  },
-  onRender(req, res) {
-    res.jsonp(res.locals.data)
-  }
-}
+import defaultOptions from '../core/default-options'
 
 export default (source, options) => {
   // Merge with default values
-  let opts = Object.assign(defaultOptions, options)
+  let opts = Object.assign({}, defaultOptions, options)
 
   // Create router
   const router = express.Router()
@@ -83,6 +62,9 @@ export default (source, options) => {
   })
 
   router.use((err, req, res, next) => {
+    if (res.headersSent) {
+      return next(err)
+    }
     console.error(err.stack)
     res.status(500).send(err.stack)
   })
