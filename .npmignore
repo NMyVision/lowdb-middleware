@@ -1,2 +1,7 @@
-src
+lib
 test
+.vscode
+*.config.js
+*.tgz
+*.linq
+*.eslint*

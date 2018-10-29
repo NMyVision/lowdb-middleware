@@ -1,7 +1,7 @@
 import assert from 'assert'
 import _ from 'lodash'
 import lodashId from 'lodash-id'
-import * as mixins from '../../src/mixins'
+import * as mixins from '../../src/core/mixins'
 
 describe('mixins', () => {
   let db

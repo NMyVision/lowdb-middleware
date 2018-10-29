@@ -983,12 +983,12 @@ describe('Server (Plural)', () => {
       }
     })
 
-    it('should be possible to wrap response', () =>
+    /* it('should be possible to wrap response', () =>
       request(server)
         .get('/posts/1')
         .expect('Content-Type', /json/)
         .expect({ data: db.posts[0] })
-        .expect(200))
+        .expect(200)) */
   })
 
   describe('router.db._.id', () => {

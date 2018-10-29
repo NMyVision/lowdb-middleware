@@ -1,14 +1,11 @@
 import express from 'express'
-import bodyParser from '../body-parser'
 import defaultPrep from './prep'
 import { plural, singular, write, database, defaultOptions } from '../core'
-
+import * as db from './database'
 export default (options, prepFunction) => {
-  const prep = prepFunction || defaultPrep
   const opts = Object.assign({}, defaultOptions, options)
+  const prep = (prepFunction || defaultPrep)(opts)
   const router = express.Router()
-
-  router.use(bodyParser)
 
   function map(req, res, next, singleAction, pluralAction, def) {
     let { type } = res.locals
@@ -16,6 +13,16 @@ export default (options, prepFunction) => {
 
     return action === undefined ? next() : action(req, res, next)
   }
+  
+  // prettier-ignore
+  router
+    .route('/db')
+    .get(db.listDatabases)
+
+  router
+    .route('/db/:name')
+    .post(db.ensureDbExists, db.create)
+    .patch(db.ensureDbExists, db.update)
 
   router
     .route(`/:database/db`)
