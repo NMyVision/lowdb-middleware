@@ -25,4 +25,27 @@ The following PRs were implemented from json-server repository
 - [x] Add `_flatten` option to flatten nested objects
 - [x] Add `_keys` option to reduce returned results
 
+
+## Example usage
+
+Legacy database setup
+`app.use('/test', middleware.staticRouter("./databases/test.json"))`
+
+New dynamic database setup
+`app.use('/api', middleware.dynamicRouter())`
+
+structure is
+`/api/{databasename}/{collection} => /api/application/users`
+
+## Database management
+
+List dynamic databases
+`GET /api/db`
+
+Create new databases
+`POST /api/db`
+
+Modify existing database
+`PATCH /api/db`
+
 Documenation coming....
