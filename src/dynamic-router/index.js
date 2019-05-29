@@ -1,10 +1,12 @@
 import express from 'express'
 import defaultPrep from './prep'
 import { plural, singular, write, database, defaultOptions } from '../core'
-import * as db from './database'
+import dynamic from './database'
+
 export default (options, prepFunction) => {
   const opts = Object.assign({}, defaultOptions, options)
   const prep = (prepFunction || defaultPrep)(opts)
+  const db = dynamic(opts)
   const router = express.Router()
 
   function map(req, res, next, singleAction, pluralAction, def) {
@@ -13,7 +15,7 @@ export default (options, prepFunction) => {
 
     return action === undefined ? next() : action(req, res, next)
   }
-  
+
   // prettier-ignore
   router
     .route('/db')

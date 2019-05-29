@@ -1,7 +1,11 @@
-lib
 test
+.git
 .vscode
+
 *.config.js
 *.tgz
 *.linq
 *.eslint*
+
+.gitignore
+package-lock.json

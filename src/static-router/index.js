@@ -1,7 +1,6 @@
 import express from 'express'
 import methodOverride from 'method-override'
 import _ from 'lodash'
-import bodyParser from '../body-parser'
 import lowdb from '../core/lowdb'
 import plural from './plural'
 import nested from './nested'
@@ -12,16 +11,24 @@ import defaultOptions from '../core/default-options'
 export default (source, options) => {
   // Merge with default values
   let opts = Object.assign({}, defaultOptions, options)
-
+  let db
   // Create router
   const router = express.Router()
 
   // Add middlewares
   router.use(methodOverride())
-  router.use(bodyParser)
 
-  let db = lowdb(source)
-
+  try {
+    db = lowdb(source, opts.autoCreate)
+  } catch (e) {
+    router.all('*', (req, res) => {
+      res
+        .status(404)
+        .json({ status: 'error', message: `database does not exist.` })
+        .end()
+    })
+    return router
+  }
   // Expose database
   router['db'] = db
 
@@ -32,25 +39,23 @@ export default (source, options) => {
   router.use(nested(opts))
 
   // Create routes
-  db
-    .forEach((value, key) => {
-      if (_.isPlainObject(value)) {
-        router.use(`/${key}`, singular(db, key, opts))
-        return
-      }
+  db.forEach((value, key) => {
+    if (_.isPlainObject(value)) {
+      router.use(`/${key}`, singular(db, key, opts))
+      return
+    }
 
-      if (_.isArray(value)) {
-        router.use(`/${key}`, plural(db, key, opts))
-        return
-      }
+    if (_.isArray(value)) {
+      router.use(`/${key}`, plural(db, key, opts))
+      return
+    }
 
-      const msg =
-        `Type of "${key}" (${typeof value}) ${_.isObject(source) ? '' : `in ${source}`} is not supported. ` +
-        `Use objects or arrays of objects.`
+    const msg =
+      `Type of "${key}" (${typeof value}) ${_.isObject(source) ? '' : `in ${source}`} is not supported. ` +
+      `Use objects or arrays of objects.`
 
-      throw new Error(msg)
-    })
-    .value()
+    throw new Error(msg)
+  }).value()
 
   router.use((req, res) => {
     if (!res.locals.data) {

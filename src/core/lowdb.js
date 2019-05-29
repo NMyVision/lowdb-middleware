@@ -5,17 +5,20 @@ import FileSync from 'lowdb/adapters/FileSync'
 import MemoryAdapter from 'lowdb/adapters/Memory'
 import validateData from './validate-data'
 import * as mixins from './mixins'
+import fs from 'graceful-fs'
 
-export default source => {
+export default (source, autoGenerate = false) => {
   // Create database
-  let db
+  let db = null
 
   if (_.isObject(source)) {
     db = low(new MemoryAdapter(null))
     db.setState(source)
-  } else {
+  } else if (fs.existsSync(source) || autoGenerate) {
     db = low(new FileSync(source))
   }
+
+  if (db === null) throw new Error(`Unable to find database ${source}.`)
 
   validateData(db.getState())
 
