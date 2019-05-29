@@ -1,6 +1,6 @@
 {
   "name": "lowdb-middleware",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "Forked version of Json-Server, this repository focuses on ExpressJS middleware logic",
   "main": "./lib/index.js",
   "directories": {
