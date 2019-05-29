@@ -28,7 +28,7 @@
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
     "nanoid": "^1.0.1",
-    "pluralize": "^7.0.0"
+    "pluralize": "^8.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
