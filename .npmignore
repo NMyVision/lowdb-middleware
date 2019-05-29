@@ -1,5 +1,6 @@
-test
+src
 .git
+test
 .vscode
 
 *.config.js

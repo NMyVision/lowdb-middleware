@@ -47,7 +47,4 @@ Create new databases
 Modify existing database
 `PATCH /api/db`
 
-
-
-
 Documenation coming....
