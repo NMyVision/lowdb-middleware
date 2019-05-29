@@ -25,7 +25,7 @@
     "lodash": "^4.11.2",
     "lodash-id": "^0.14.0",
     "lowdb": "^1.0.0",
-    "method-override": "^2.3.10",
+    "method-override": "^3.0.0",
     "morgan": "^1.9.0",
     "nanoid": "^1.0.1",
     "pluralize": "^8.0.0"
